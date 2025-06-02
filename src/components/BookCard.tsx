@@ -2,15 +2,56 @@
 import React from 'react';
 import { Button } from '@/components/ui/button';
 import { ShoppingCart, Eye } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 interface BookCardProps {
+  id?: number;
   title: string;
   price: string;
   description: string;
   coverColor: string;
+  priceValue?: number;
 }
 
-const BookCard: React.FC<BookCardProps> = ({ title, price, description, coverColor }) => {
+const BookCard: React.FC<BookCardProps> = ({ id, title, price, description, coverColor, priceValue }) => {
+  const navigate = useNavigate();
+
+  const handleAddToCart = (e: React.MouseEvent) => {
+    e.stopPropagation(); // Prevent navigation when clicking Add to Cart
+    
+    if (!id) return;
+
+    const cartItem = {
+      id,
+      title,
+      price,
+      priceValue: priceValue || parseFloat(price.replace('$', ''))
+    };
+
+    const existingCart = localStorage.getItem('cart');
+    const cart = existingCart ? JSON.parse(existingCart) : [];
+    
+    const existingItemIndex = cart.findIndex((item: any) => item.id === id);
+    
+    if (existingItemIndex > -1) {
+      cart[existingItemIndex].quantity += 1;
+    } else {
+      cart.push({ ...cartItem, quantity: 1 });
+    }
+    
+    localStorage.setItem('cart', JSON.stringify(cart));
+    
+    // Update cart count in header
+    window.dispatchEvent(new Event('cartUpdated'));
+  };
+
+  const handlePreview = (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (id) {
+      navigate(`/book/${id}`);
+    }
+  };
+
   return (
     <div className="group bg-white rounded-xl shadow-lg hover:shadow-2xl transition-all duration-500 transform hover:-translate-y-2 overflow-hidden">
       {/* Book Cover */}
@@ -24,7 +65,12 @@ const BookCard: React.FC<BookCardProps> = ({ title, price, description, coverCol
           </div>
           {/* Hover overlay */}
           <div className="absolute inset-0 bg-black/20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-            <Button variant="secondary" size="sm" className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
+            <Button 
+              variant="secondary" 
+              size="sm" 
+              className="transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+              onClick={handlePreview}
+            >
               <Eye className="h-4 w-4 mr-2" />
               Preview
             </Button>
@@ -48,6 +94,7 @@ const BookCard: React.FC<BookCardProps> = ({ title, price, description, coverCol
           <Button 
             size="sm" 
             className="bg-brand-primary hover:bg-brand-warm-brown text-white transition-all duration-300 transform hover:scale-105"
+            onClick={handleAddToCart}
           >
             <ShoppingCart className="h-4 w-4 mr-2" />
             Add to Cart
