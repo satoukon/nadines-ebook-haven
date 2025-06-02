@@ -1,11 +1,40 @@
-
-import React from 'react';
-import { ShoppingCart, User, Menu } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
   const navigate = useNavigate();
+  const [cartCount, setCartCount] = useState(0);
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+  useEffect(() => {
+    const existingCart = localStorage.getItem('cart');
+    if (existingCart) {
+      const cart = JSON.parse(existingCart);
+      const totalItems = cart.reduce((sum: number, item: any) => sum + item.quantity, 0);
+      setCartCount(totalItems);
+    } else {
+      setCartCount(0);
+    }
+
+    const updateCartCount = () => {
+      const updatedCart = localStorage.getItem('cart');
+      if (updatedCart) {
+        const cart = JSON.parse(updatedCart);
+        const totalItems = cart.reduce((sum: number, item: any) => sum + item.quantity, 0);
+        setCartCount(totalItems);
+      } else {
+        setCartCount(0);
+      }
+    };
+
+    window.addEventListener('cartUpdated', updateCartCount);
+
+    return () => {
+      window.removeEventListener('cartUpdated', updateCartCount);
+    };
+  }, []);
 
   return (
     <header className="bg-white shadow-sm border-b border-brand-beige sticky top-0 z-50">
@@ -14,7 +43,7 @@ const Header = () => {
           {/* Logo/Brand */}
           <div className="flex items-center space-x-2">
             <h1 
-              className="font-playfair text-2xl font-bold text-brand-primary cursor-pointer"
+              className="font-playfair text-xl md:text-2xl font-bold text-brand-primary cursor-pointer"
               onClick={() => navigate('/')}
             >
               Nadine Paulayu
@@ -22,7 +51,7 @@ const Header = () => {
           </div>
 
           {/* Navigation - Desktop */}
-          <nav className="hidden md:flex items-center space-x-8">
+          <nav className="hidden md:flex items-center space-x-6 lg:space-x-8">
             <button 
               onClick={() => navigate('/')}
               className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200"
@@ -44,8 +73,8 @@ const Header = () => {
           </nav>
 
           {/* Action Buttons */}
-          <div className="flex items-center space-x-3">
-            <Button variant="ghost" size="icon" className="text-gray-700 hover:text-brand-primary">
+          <div className="flex items-center space-x-2 md:space-x-3">
+            <Button variant="ghost" size="icon" className="hidden sm:flex text-gray-700 hover:text-brand-primary">
               <User className="h-5 w-5" />
             </Button>
             <Button 
@@ -54,16 +83,69 @@ const Header = () => {
               className="text-gray-700 hover:text-brand-primary relative"
               onClick={() => navigate('/checkout')}
             >
-              <ShoppingCart className="h-5 w-5" />
-              <span className="absolute -top-2 -right-2 bg-brand-primary text-white text-xs rounded-full h-5 w-5 flex items-center justify-center">
-                0
-              </span>
+              <ShoppingCart className="h-4 w-4 md:h-5 md:w-5" />
+              {cartCount > 0 && (
+                <span className="absolute -top-1 -right-1 md:-top-2 md:-right-2 bg-brand-primary text-white text-xs rounded-full h-4 w-4 md:h-5 md:w-5 flex items-center justify-center text-[10px] md:text-xs">
+                  {cartCount}
+                </span>
+              )}
             </Button>
-            <Button variant="ghost" size="icon" className="md:hidden text-gray-700">
-              <Menu className="h-5 w-5" />
+            <Button 
+              variant="ghost" 
+              size="icon" 
+              className="md:hidden text-gray-700"
+              onClick={() => setIsMenuOpen(!isMenuOpen)}
+            >
+              {isMenuOpen ? <X className="h-5 w-5" /> : <Menu className="h-5 w-5" />}
             </Button>
           </div>
         </div>
+
+        {/* Mobile Navigation */}
+        {isMenuOpen && (
+          <div className="md:hidden mt-4 pb-4 border-t border-brand-beige">
+            <nav className="flex flex-col space-y-4 pt-4">
+              <button 
+                onClick={() => {
+                  navigate('/');
+                  setIsMenuOpen(false);
+                }}
+                className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200 text-left"
+              >
+                Home
+              </button>
+              <button 
+                onClick={() => {
+                  navigate('/shop');
+                  setIsMenuOpen(false);
+                }}
+                className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200 text-left"
+              >
+                Shop
+              </button>
+              <a 
+                href="#about" 
+                className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                About
+              </a>
+              <a 
+                href="#contact" 
+                className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200"
+                onClick={() => setIsMenuOpen(false)}
+              >
+                Contact
+              </a>
+              <div className="pt-2">
+                <Button variant="ghost" className="text-gray-700 hover:text-brand-primary justify-start p-0">
+                  <User className="h-5 w-5 mr-2" />
+                  Account
+                </Button>
+              </div>
+            </nav>
+          </div>
+        )}
       </div>
     </header>
   );
