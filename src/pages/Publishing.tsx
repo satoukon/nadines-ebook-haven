@@ -6,7 +6,7 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Textarea } from '@/components/ui/textarea';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Upload, FileText, Image as ImageIcon, File, X, Edit3 } from 'lucide-react';
+import { Upload, FileText, Image as ImageIcon, File, X, Edit3, Camera, Plus } from 'lucide-react';
 import { useToast } from '@/hooks/use-toast';
 import Header from '@/components/Header';
 
@@ -22,6 +22,8 @@ const Publishing = () => {
   const [author, setAuthor] = useState('');
   const [description, setDescription] = useState('');
   const [manualContent, setManualContent] = useState('');
+  const [coverImage, setCoverImage] = useState<File | null>(null);
+  const [coverPreview, setCoverPreview] = useState<string>('');
   const [uploadedFiles, setUploadedFiles] = useState<UploadedFile[]>([]);
   const [isProcessing, setIsProcessing] = useState(false);
   const { toast } = useToast();
@@ -55,12 +57,43 @@ const Publishing = () => {
       }
     });
 
-    // Reset the input
+    event.target.value = '';
+  };
+
+  const handleCoverUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      setCoverImage(file);
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        setCoverPreview(e.target?.result as string);
+      };
+      reader.readAsDataURL(file);
+    }
+    event.target.value = '';
+  };
+
+  const handleImageInsert = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0];
+    if (file && file.type.startsWith('image/')) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const imageUrl = e.target?.result as string;
+        const imageText = `\n\n[IMAGE: ${file.name}]\n\n`;
+        setManualContent(prev => prev + imageText);
+      };
+      reader.readAsDataURL(file);
+    }
     event.target.value = '';
   };
 
   const removeFile = (id: string) => {
     setUploadedFiles(prev => prev.filter(file => file.id !== id));
+  };
+
+  const removeCover = () => {
+    setCoverImage(null);
+    setCoverPreview('');
   };
 
   const handlePublish = async () => {
@@ -78,7 +111,6 @@ const Publishing = () => {
 
     setIsProcessing(true);
     
-    // Simulate PDF generation process
     setTimeout(() => {
       toast({
         title: "Ebook Published Successfully!",
@@ -86,12 +118,13 @@ const Publishing = () => {
       });
       setIsProcessing(false);
       
-      // Reset form
       setTitle('');
       setAuthor('');
       setDescription('');
       setManualContent('');
       setUploadedFiles([]);
+      setCoverImage(null);
+      setCoverPreview('');
     }, 3000);
   };
 
@@ -163,6 +196,51 @@ const Publishing = () => {
                 />
               </div>
 
+              {/* Cover Image Upload */}
+              <div className="space-y-4">
+                <Label className="text-contrast font-medium text-lg">
+                  Book Cover
+                </Label>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div className="border-2 border-dashed border-primary/30 rounded-lg p-4 text-center hover:border-primary/50 transition-colors">
+                    <input
+                      type="file"
+                      accept="image/*"
+                      onChange={handleCoverUpload}
+                      className="hidden"
+                      id="cover-upload"
+                    />
+                    <label htmlFor="cover-upload" className="cursor-pointer">
+                      <Camera className="h-8 w-8 text-primary mx-auto mb-2" />
+                      <p className="text-contrast font-medium mb-1">
+                        Upload Cover Image
+                      </p>
+                      <p className="text-sm text-gray-500">
+                        Recommended: 600x800px (JPG, PNG)
+                      </p>
+                    </label>
+                  </div>
+                  
+                  {coverPreview && (
+                    <div className="relative">
+                      <img
+                        src={coverPreview}
+                        alt="Cover preview"
+                        className="w-full h-48 object-cover rounded-lg border border-primary/30"
+                      />
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        onClick={removeCover}
+                        className="absolute top-2 right-2 bg-red-500 hover:bg-red-600 text-white"
+                      >
+                        <X className="h-4 w-4" />
+                      </Button>
+                    </div>
+                  )}
+                </div>
+              </div>
+
               {/* Content Creation Tabs */}
               <div className="space-y-4">
                 <Label className="text-contrast font-medium text-lg">
@@ -202,7 +280,6 @@ const Publishing = () => {
                       </label>
                     </div>
 
-                    {/* Uploaded Files Display */}
                     {uploadedFiles.length > 0 && (
                       <div className="space-y-3">
                         <h3 className="font-medium text-contrast">Uploaded Files:</h3>
@@ -250,21 +327,39 @@ const Publishing = () => {
                   </TabsContent>
                   
                   <TabsContent value="write" className="space-y-4">
-                    <div className="space-y-2">
+                    <div className="flex justify-between items-center">
                       <Label htmlFor="manual-content" className="text-contrast font-medium">
                         Write your book content here
                       </Label>
-                      <Textarea
-                        id="manual-content"
-                        value={manualContent}
-                        onChange={(e) => setManualContent(e.target.value)}
-                        placeholder="Start writing your book content here. You can write chapters, add formatting, and create your complete book..."
-                        className="border-primary/30 focus:border-primary min-h-[400px] resize-vertical"
-                      />
-                      <p className="text-sm text-gray-500">
-                        {manualContent.length} characters written
-                      </p>
+                      <div className="flex items-center gap-2">
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageInsert}
+                          className="hidden"
+                          id="image-insert"
+                        />
+                        <Button
+                          variant="outline"
+                          size="sm"
+                          onClick={() => document.getElementById('image-insert')?.click()}
+                          className="border-primary/30 text-primary hover:bg-primary/10"
+                        >
+                          <Plus className="h-4 w-4 mr-1" />
+                          Insert Image
+                        </Button>
+                      </div>
                     </div>
+                    <Textarea
+                      id="manual-content"
+                      value={manualContent}
+                      onChange={(e) => setManualContent(e.target.value)}
+                      placeholder="Start writing your book content here. You can write chapters, add formatting, and create your complete book. Use the 'Insert Image' button to add images to your content..."
+                      className="border-primary/30 focus:border-primary min-h-[400px] resize-vertical"
+                    />
+                    <p className="text-sm text-gray-500">
+                      {manualContent.length} characters written
+                    </p>
                   </TabsContent>
                 </Tabs>
               </div>

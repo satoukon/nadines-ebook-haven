@@ -71,12 +71,18 @@ const Header = () => {
             >
               Publish
             </button>
-            <a href="#about" className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200">
+            <button 
+              onClick={() => navigate('/about')}
+              className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200"
+            >
               About
-            </a>
-            <a href="#contact" className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200">
+            </button>
+            <button 
+              onClick={() => navigate('/contact')}
+              className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200"
+            >
               Contact
-            </a>
+            </button>
           </nav>
 
           {/* Action Buttons */}
@@ -139,20 +145,24 @@ const Header = () => {
               >
                 Publish
               </button>
-              <a 
-                href="#about" 
-                className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200"
-                onClick={() => setIsMenuOpen(false)}
+              <button 
+                onClick={() => {
+                  navigate('/about');
+                  setIsMenuOpen(false);
+                }}
+                className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200 text-left"
               >
                 About
-              </a>
-              <a 
-                href="#contact" 
-                className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200"
-                onClick={() => setIsMenuOpen(false)}
+              </button>
+              <button 
+                onClick={() => {
+                  navigate('/contact');
+                  setIsMenuOpen(false);
+                }}
+                className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200 text-left"
               >
                 Contact
-              </a>
+              </button>
               <div className="pt-2">
                 <Button variant="ghost" className="text-gray-700 hover:text-brand-primary justify-start p-0">
                   <User className="h-5 w-5 mr-2" />
