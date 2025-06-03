@@ -1,3 +1,4 @@
+
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, User, Menu, X } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -64,6 +65,12 @@ const Header = () => {
             >
               Shop
             </button>
+            <button 
+              onClick={() => navigate('/publish')}
+              className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200"
+            >
+              Publish
+            </button>
             <a href="#about" className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200">
               About
             </a>
@@ -122,6 +129,15 @@ const Header = () => {
                 className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200 text-left"
               >
                 Shop
+              </button>
+              <button 
+                onClick={() => {
+                  navigate('/publish');
+                  setIsMenuOpen(false);
+                }}
+                className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200 text-left"
+              >
+                Publish
               </button>
               <a 
                 href="#about" 
