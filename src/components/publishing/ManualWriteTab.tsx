@@ -21,7 +21,7 @@ const ManualWriteTab: React.FC<ManualWriteTabProps> = ({
       reader.onload = (e) => {
         const imageUrl = e.target?.result as string;
         const imageText = `\n\n[IMAGE: ${file.name}]\n\n`;
-        setManualContent(prev => prev + imageText);
+        setManualContent(manualContent + imageText);
       };
       reader.readAsDataURL(file);
     }
