@@ -102,7 +102,7 @@ const Shop = () => {
           </div>
 
           {/* Filters */}
-          <div className="bg-white rounded-lg shadow-sm border p-6 mb-8">
+          <div className="bg-white rounded-lg shadow-sm p-6 mb-8" style={{ border: '2px solid #EAC8C4' }}>
             <div className="grid md:grid-cols-4 gap-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Search</label>
@@ -110,12 +110,20 @@ const Shop = () => {
                   placeholder="Search books..."
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
+                  className="border-2 transition-colors focus:border-opacity-70"
+                  style={{ borderColor: '#EAC8C4' }}
+                  onFocus={(e) => {
+                    e.currentTarget.style.borderColor = '#F9C5D1';
+                  }}
+                  onBlur={(e) => {
+                    e.currentTarget.style.borderColor = '#EAC8C4';
+                  }}
                 />
               </div>
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Category</label>
                 <Select value={selectedCategory} onValueChange={setSelectedCategory}>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-2" style={{ borderColor: '#EAC8C4' }}>
                     <SelectValue placeholder="All Categories" />
                   </SelectTrigger>
                   <SelectContent>
@@ -129,7 +137,7 @@ const Shop = () => {
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">Price Range</label>
                 <Select value={priceRange} onValueChange={setPriceRange}>
-                  <SelectTrigger>
+                  <SelectTrigger className="border-2" style={{ borderColor: '#EAC8C4' }}>
                     <SelectValue placeholder="All Prices" />
                   </SelectTrigger>
                   <SelectContent>
@@ -148,7 +156,16 @@ const Shop = () => {
                     setSearchTerm('');
                   }}
                   variant="outline"
-                  className="w-full"
+                  className="w-full border-2 transition-colors"
+                  style={{ borderColor: '#EAC8C4' }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.backgroundColor = '#F9C5D1';
+                    e.currentTarget.style.borderColor = '#F9C5D1';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.backgroundColor = 'transparent';
+                    e.currentTarget.style.borderColor = '#EAC8C4';
+                  }}
                 >
                   Clear Filters
                 </Button>

@@ -73,7 +73,17 @@ const FeaturedBooks = () => {
         <div className="text-center">
           <button 
             onClick={handleViewAllBooks}
-            className="font-inter bg-transparent border-2 border-brand-primary text-brand-primary px-6 md:px-8 py-2 md:py-3 rounded-lg hover:bg-brand-primary hover:text-white transition-all duration-300 transform hover:scale-105 font-semibold text-sm md:text-base"
+            className="font-inter border-2 px-6 md:px-8 py-2 md:py-3 rounded-lg transition-all duration-300 transform hover:scale-105 font-semibold text-sm md:text-base text-white"
+            style={{ 
+              backgroundColor: '#E6B7B0',
+              borderColor: '#E6B7B0'
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.opacity = '0.9';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.opacity = '1';
+            }}
           >
             View All Books
           </button>

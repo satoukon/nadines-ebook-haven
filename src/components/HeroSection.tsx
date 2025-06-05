@@ -24,16 +24,28 @@ const HeroSection = () => {
             <div className="flex flex-col sm:flex-row gap-3 md:gap-4 justify-center lg:justify-start">
               <Button 
                 size="lg" 
-                className="bg-brand-primary hover:bg-brand-warm-brown text-white px-6 md:px-8 py-2 md:py-3 text-base md:text-lg font-semibold transition-all duration-300 transform hover:scale-105"
+                className="text-white px-6 md:px-8 py-2 md:py-3 text-base md:text-lg font-semibold transition-all duration-300 transform hover:scale-105 hover:opacity-90"
+                style={{ backgroundColor: '#E6B7B0' }}
                 onClick={() => navigate('/shop')}
               >
-                Browse Collection
+                Shop Now
                 <ArrowRight className="ml-2 h-4 w-4 md:h-5 md:w-5" />
               </Button>
               <Button 
                 variant="outline" 
                 size="lg" 
-                className="border-brand-primary text-brand-primary hover:bg-brand-primary hover:text-white px-6 md:px-8 py-2 md:py-3 text-base md:text-lg font-semibold transition-all duration-300"
+                className="border-2 hover:text-white px-6 md:px-8 py-2 md:py-3 text-base md:text-lg font-semibold transition-all duration-300"
+                style={{ 
+                  borderColor: '#E6B7B0', 
+                  color: '#E6B7B0',
+                  backgroundColor: 'transparent'
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.backgroundColor = '#E6B7B0';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.backgroundColor = 'transparent';
+                }}
               >
                 Learn More
               </Button>
@@ -52,8 +64,8 @@ const HeroSection = () => {
                 </div>
               </div>
               {/* Decorative elements */}
-              <div className="absolute -top-2 -right-2 md:-top-4 md:-right-4 w-6 h-6 md:w-8 md:h-8 bg-brand-primary rounded-full opacity-70"></div>
-              <div className="absolute -bottom-2 -left-2 md:-bottom-4 md:-left-4 w-4 h-4 md:w-6 md:h-6 bg-brand-warm-brown rounded-full opacity-70"></div>
+              <div className="absolute -top-2 -right-2 md:-top-4 md:-right-4 w-6 h-6 md:w-8 md:h-8 rounded-full opacity-70" style={{ backgroundColor: '#E6B7B0' }}></div>
+              <div className="absolute -bottom-2 -left-2 md:-bottom-4 md:-left-4 w-4 h-4 md:w-6 md:h-6 rounded-full opacity-70" style={{ backgroundColor: '#F9C5D1' }}></div>
             </div>
           </div>
         </div>

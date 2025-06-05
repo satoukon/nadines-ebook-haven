@@ -5,6 +5,7 @@ import HeroSection from '../components/HeroSection';
 import FeaturedBooks from '../components/FeaturedBooks';
 import Testimonials from '../components/Testimonials';
 import Footer from '../components/Footer';
+import EmailNewsletterPopup from '../components/EmailNewsletterPopup';
 
 const Index = () => {
   return (
@@ -16,6 +17,7 @@ const Index = () => {
         <Testimonials />
       </main>
       <Footer />
+      <EmailNewsletterPopup />
     </div>
   );
 };
