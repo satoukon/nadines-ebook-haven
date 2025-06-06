@@ -156,7 +156,7 @@ const EbookUploadForm = () => {
             <label className="block text-sm font-medium mb-2" style={{ color: '#0F0F0F' }}>
               Cover Image
             </label>
-            <div className="border-2 border-dashed rounded-lg p-4 text-center" style={{ borderColor: '#EAC8C4' }}>
+            <div className="relative border-2 border-dashed rounded-lg p-4 text-center cursor-pointer" style={{ borderColor: '#EAC8C4' }}>
               {coverImage ? (
                 <div className="space-y-2">
                   <p className="text-sm" style={{ color: '#0F0F0F' }}>{coverImage.name}</p>
@@ -191,7 +191,7 @@ const EbookUploadForm = () => {
             <label className="block text-sm font-medium mb-2" style={{ color: '#0F0F0F' }}>
               PDF File
             </label>
-            <div className="border-2 border-dashed rounded-lg p-4 text-center" style={{ borderColor: '#EAC8C4' }}>
+            <div className="relative border-2 border-dashed rounded-lg p-4 text-center cursor-pointer" style={{ borderColor: '#EAC8C4' }}>
               {pdfFile ? (
                 <div className="space-y-2">
                   <p className="text-sm" style={{ color: '#0F0F0F' }}>{pdfFile.name}</p>
