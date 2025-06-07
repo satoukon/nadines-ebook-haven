@@ -1,8 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, User, Menu, X, LogIn, UserPlus } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, LogIn, UserPlus, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger, DropdownMenuSeparator } from '@/components/ui/dropdown-menu';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
@@ -89,8 +89,17 @@ const Header = () => {
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
-                <DropdownMenuItem onClick={() => navigate('/admin/login')}>
+                <DropdownMenuItem onClick={() => navigate('/login')}>
                   <LogIn className="mr-2 h-4 w-4" />
+                  User Login
+                </DropdownMenuItem>
+                <DropdownMenuItem onClick={() => navigate('/register')}>
+                  <UserPlus className="mr-2 h-4 w-4" />
+                  Sign Up
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={() => navigate('/admin/login')}>
+                  <Shield className="mr-2 h-4 w-4" />
                   Admin Login
                 </DropdownMenuItem>
               </DropdownMenuContent>
@@ -160,16 +169,38 @@ const Header = () => {
               >
                 Contact
               </button>
-              <div className="pt-2">
+              <div className="pt-2 space-y-2">
                 <Button 
                   variant="ghost" 
-                  className="text-gray-700 hover:text-brand-primary justify-start p-0"
+                  className="text-gray-700 hover:text-brand-primary justify-start p-0 w-full"
+                  onClick={() => {
+                    navigate('/login');
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <LogIn className="h-4 w-4 mr-2" />
+                  User Login
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className="text-gray-700 hover:text-brand-primary justify-start p-0 w-full"
+                  onClick={() => {
+                    navigate('/register');
+                    setIsMenuOpen(false);
+                  }}
+                >
+                  <UserPlus className="h-4 w-4 mr-2" />
+                  Sign Up
+                </Button>
+                <Button 
+                  variant="ghost" 
+                  className="text-gray-700 hover:text-brand-primary justify-start p-0 w-full"
                   onClick={() => {
                     navigate('/admin/login');
                     setIsMenuOpen(false);
                   }}
                 >
-                  <User className="h-5 w-5 mr-2" />
+                  <Shield className="h-4 w-4 mr-2" />
                   Admin Login
                 </Button>
               </div>
