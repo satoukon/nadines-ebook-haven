@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect } from 'react';
 import { ShoppingCart, User, Menu, X, LogIn, UserPlus, Shield } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -91,16 +90,11 @@ const Header = () => {
               <DropdownMenuContent align="end">
                 <DropdownMenuItem onClick={() => navigate('/login')}>
                   <LogIn className="mr-2 h-4 w-4" />
-                  User Login
+                  Login
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={() => navigate('/register')}>
                   <UserPlus className="mr-2 h-4 w-4" />
                   Sign Up
-                </DropdownMenuItem>
-                <DropdownMenuSeparator />
-                <DropdownMenuItem onClick={() => navigate('/admin/login')}>
-                  <Shield className="mr-2 h-4 w-4" />
-                  Admin Login
                 </DropdownMenuItem>
               </DropdownMenuContent>
             </DropdownMenu>
@@ -179,7 +173,7 @@ const Header = () => {
                   }}
                 >
                   <LogIn className="h-4 w-4 mr-2" />
-                  User Login
+                  Login
                 </Button>
                 <Button 
                   variant="ghost" 
@@ -191,17 +185,6 @@ const Header = () => {
                 >
                   <UserPlus className="h-4 w-4 mr-2" />
                   Sign Up
-                </Button>
-                <Button 
-                  variant="ghost" 
-                  className="text-gray-700 hover:text-brand-primary justify-start p-0 w-full"
-                  onClick={() => {
-                    navigate('/admin/login');
-                    setIsMenuOpen(false);
-                  }}
-                >
-                  <Shield className="h-4 w-4 mr-2" />
-                  Admin Login
                 </Button>
               </div>
             </nav>
