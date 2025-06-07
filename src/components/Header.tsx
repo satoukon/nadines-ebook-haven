@@ -1,7 +1,8 @@
 
 import React, { useState, useEffect } from 'react';
-import { ShoppingCart, User, Menu, X } from 'lucide-react';
+import { ShoppingCart, User, Menu, X, LogIn, UserPlus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useNavigate } from 'react-router-dom';
 
 const Header = () => {
@@ -66,12 +67,6 @@ const Header = () => {
               Shop
             </button>
             <button 
-              onClick={() => navigate('/publish')}
-              className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200"
-            >
-              Publish
-            </button>
-            <button 
               onClick={() => navigate('/about')}
               className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200"
             >
@@ -87,9 +82,20 @@ const Header = () => {
 
           {/* Action Buttons */}
           <div className="flex items-center space-x-2 md:space-x-3">
-            <Button variant="ghost" size="icon" className="hidden sm:flex text-gray-700 hover:text-brand-primary">
-              <User className="h-5 w-5" />
-            </Button>
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button variant="ghost" size="icon" className="hidden sm:flex text-gray-700 hover:text-brand-primary">
+                  <User className="h-5 w-5" />
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent align="end">
+                <DropdownMenuItem onClick={() => navigate('/admin/login')}>
+                  <LogIn className="mr-2 h-4 w-4" />
+                  Admin Login
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+            
             <Button 
               variant="ghost" 
               size="icon" 
@@ -138,15 +144,6 @@ const Header = () => {
               </button>
               <button 
                 onClick={() => {
-                  navigate('/publish');
-                  setIsMenuOpen(false);
-                }}
-                className="font-inter text-gray-700 hover:text-brand-primary transition-colors duration-200 text-left"
-              >
-                Publish
-              </button>
-              <button 
-                onClick={() => {
                   navigate('/about');
                   setIsMenuOpen(false);
                 }}
@@ -164,9 +161,16 @@ const Header = () => {
                 Contact
               </button>
               <div className="pt-2">
-                <Button variant="ghost" className="text-gray-700 hover:text-brand-primary justify-start p-0">
+                <Button 
+                  variant="ghost" 
+                  className="text-gray-700 hover:text-brand-primary justify-start p-0"
+                  onClick={() => {
+                    navigate('/admin/login');
+                    setIsMenuOpen(false);
+                  }}
+                >
                   <User className="h-5 w-5 mr-2" />
-                  Account
+                  Admin Login
                 </Button>
               </div>
             </nav>
